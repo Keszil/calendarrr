@@ -29,6 +29,46 @@ export default function Home() {
     }, 1500)
   }
 
+  // Pricing tervek – IDE TETTÜK, hogy hozzáférjen a state-hez
+  const pricingPlans = [
+    {
+      name: "Ingyenes",
+      price: 0,
+      period: "",
+      description: "Kipróbálásra tökéletes",
+      features: ["1 foglalási link", "Korlátozott időpontok", "Alap email visszaigazolás"],
+      cta: "Ingyen kezdés",
+      popular: false,
+    },
+    {
+      name: "Starter",
+      price: isAnnual ? 4900 : 5900,
+      period: isAnnual ? "/hó (éves)" : "/hó",
+      description: "Egyéni szakembereknek",
+      features: ["Korlátlan linkek", "Valós idejű naptár", "Automatikus emlékeztetők", "Zoom integráció", "Alap analitika"],
+      cta: "Starter csomag",
+      popular: false,
+    },
+    {
+      name: "Pro",
+      price: isAnnual ? 9900 : 12900,
+      period: isAnnual ? "/hó (éves)" : "/hó",
+      description: "A legnépszerűbb választás",
+      features: ["Minden a Starterben", "Egyéni branding", "Csoportfoglalás", "Haladó analitika", "Prioritásos támogatás", "Nincs Időpont.app logó"],
+      cta: "Pro csomag indítása",
+      popular: true,
+    },
+    {
+      name: "Business",
+      price: isAnnual ? 19900 : 24900,
+      period: isAnnual ? "/hó (éves)" : "/hó",
+      description: "Csapatoknak és stúdióknak",
+      features: ["Minden a Proban", "Több felhasználó", "Csapat naptár", "API hozzáférés", "Fehér címke", "Dedikált támogatás"],
+      cta: "Business csomag",
+      popular: false,
+    }
+  ]
+
   const testimonials = [
     {
       name: "Kovács Anna",
@@ -60,67 +100,27 @@ export default function Home() {
     }
   ]
 
-  const pricingPlans = [
-  {
-    name: "Ingyenes",
-    price: 0,
-    period: "",
-    description: "Kipróbálásra tökéletes",
-    features: ["1 foglalási link", "Korlátozott időpontok", "Alap email visszaigazolás"],
-    cta: "Ingyen kezdés",
-    popular: false,
-  },
-  {
-    name: "Starter",
-    price: isAnnual ? 4900 : 5900,
-    period: isAnnual ? "/hó (éves)" : "/hó",
-    description: "Egyéni szakembereknek",
-    features: ["Korlátlan linkek", "Valós idejű naptár", "Automatikus emlékeztetők", "Zoom integráció", "Alap analitika"],
-    cta: "Starter csomag",
-    popular: false,
-  },
-  {
-    name: "Pro",
-    price: isAnnual ? 9900 : 12900,
-    period: isAnnual ? "/hó (éves)" : "/hó",
-    description: "A legnépszerűbb választás",
-    features: ["Minden a Starterben", "Egyéni branding", "Csoportfoglalás", "Haladó analitika", "Prioritásos támogatás", "Nincs Időpont.app logó"],
-    cta: "Pro csomag indítása",
-    popular: true,
-  },
-  {
-    name: "Business",
-    price: isAnnual ? 19900 : 24900,
-    period: isAnnual ? "/hó (éves)" : "/hó",
-    description: "Csapatoknak és stúdióknak",
-    features: ["Minden a Proban", "Több felhasználó", "Csapat naptár", "API hozzáférés", "Fehér címke", "Dedikált támogatás"],
-    cta: "Business csomag",
-    popular: false,
-  }
-]
-
   return (
     <main className="relative min-h-screen bg-zinc-950 dark:bg-zinc-950 text-white overflow-hidden transition-colors duration-300">
       
-      {/* === FEJLESZTETT HÁTTÉR ANIMÁCIÓ === */}
+      {/* FEJLESZTETT HÁTTÉR ANIMÁCIÓ */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <motion.div 
+        <motion.div
           animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
           transition={{ duration: 40, repeat: Infinity }}
           className="absolute inset-0 bg-[radial-gradient(at_25%_25%,rgba(168,85,247,0.18),transparent_60%)]"
         />
-        <motion.div 
+        <motion.div
           animate={{ backgroundPosition: ['100% 30%', '0% 70%', '100% 30%'] }}
           transition={{ duration: 45, repeat: Infinity }}
           className="absolute inset-0 bg-[radial-gradient(at_75%_65%,rgba(34,211,238,0.18),transparent_65%)]"
         />
-
-        <motion.div 
+        <motion.div
           animate={{ x: [0, 220, -100, 0], y: [0, -150, 180, 0], scale: [1, 1.15, 0.9, 1] }}
           transition={{ duration: 32, repeat: Infinity }}
           className="absolute -top-40 -left-60 w-[800px] h-[800px] bg-purple-600/10 rounded-full blur-[120px]"
         />
-        <motion.div 
+        <motion.div
           animate={{ x: [0, -180, 150, 0], y: [0, 200, -120, 0], scale: [1.1, 0.85, 1.2, 1] }}
           transition={{ duration: 38, repeat: Infinity, delay: 8 }}
           className="absolute bottom-0 right-0 w-[900px] h-[900px] bg-cyan-500/10 rounded-full blur-[130px]"
@@ -132,14 +132,14 @@ export default function Home() {
         <h1 className="text-2xl font-bold tracking-tighter">Időpont.app</h1>
         
         <div className="flex items-center gap-6">
-          <button 
+          <button
             onClick={() => setIsDark(!isDark)}
             className="px-4 py-2 rounded-2xl bg-white/10 hover:bg-white/20 transition flex items-center gap-2"
           >
             {isDark ? '☀️ Világos' : '🌙 Sötét'}
           </button>
           <button className="px-6 py-2.5 rounded-2xl hover:bg-white/10 transition">Bejelentkezés</button>
-          <button 
+          <button
             onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             className="px-7 py-2.5 rounded-2xl bg-white text-black font-semibold hover:bg-white/90 transition"
           >
@@ -164,7 +164,7 @@ export default function Home() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-          <button 
+          <button
             onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             className="px-10 py-4 text-lg font-semibold rounded-2xl bg-gradient-to-r from-purple-500 via-violet-500 to-cyan-500 hover:brightness-110 transition shadow-xl shadow-purple-500/30"
           >
@@ -212,7 +212,7 @@ export default function Home() {
             { num: "02", title: "Oszd meg a saját linked", desc: "WhatsApp, email, Instagram, weboldal" },
             { num: "03", title: "Az ügyfelek maguktól foglalnak", desc: "Te csak a munkára koncentrálsz" }
           ].map((item, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               whileHover={{ y: -8 }}
               className="bg-zinc-900/70 border border-white/10 p-8 rounded-3xl hover:border-purple-500/40 transition-all"
@@ -247,7 +247,7 @@ export default function Home() {
                       onClick={() => setSelectedDate(i)}
                       className={`aspect-square rounded-2xl transition-all ${selectedDate === i ? 'bg-purple-600 scale-105' : 'bg-white/5 hover:bg-white/10'}`}
                     >
-                      {i+1}
+                      {i + 1}
                     </button>
                   ))}
                 </div>
@@ -275,8 +275,12 @@ export default function Home() {
 
             {step === 3 && (
               <motion.div key="3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <input type="email" placeholder="Add meg az email címed" className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl mb-6 focus:outline-none focus:border-purple-500" />
-                <button 
+                <input 
+                  type="email" 
+                  placeholder="Add meg az email címed" 
+                  className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl mb-6 focus:outline-none focus:border-purple-500" 
+                />
+                <button
                   onClick={handleBooking}
                   disabled={loading}
                   className="w-full py-5 bg-gradient-to-r from-purple-500 to-cyan-500 font-semibold rounded-2xl text-lg hover:brightness-110 disabled:opacity-70"
@@ -289,13 +293,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* === TESTIMONIALS === */}
+      {/* TESTIMONIALS */}
       <section className="relative z-20 max-w-6xl mx-auto mt-32 px-6">
         <h2 className="text-4xl font-semibold text-center mb-12">Mit mondanak a felhasználóink?</h2>
         
         <div className="grid md:grid-cols-2 gap-8">
           {testimonials.map((testimonial, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               whileHover={{ scale: 1.02 }}
               className="bg-zinc-900/70 border border-white/10 p-8 rounded-3xl"
@@ -316,7 +320,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* === PRICING SZekCIÓ === */}
+      {/* PRICING SECTION */}
       <section id="pricing" className="relative z-20 max-w-6xl mx-auto pt-28 pb-32 px-6">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold tracking-tight">Válaszd ki a számodra tökéletes csomagot</h2>
@@ -326,13 +330,13 @@ export default function Home() {
         {/* Éves / Havi kapcsoló */}
         <div className="flex justify-center mb-12">
           <div className="bg-zinc-900 border border-white/10 rounded-2xl p-1 flex">
-            <button 
+            <button
               onClick={() => setIsAnnual(false)}
               className={`px-7 py-3 rounded-xl transition ${!isAnnual ? 'bg-white text-black font-semibold' : 'hover:bg-white/10'}`}
             >
               Havi számlázás
             </button>
-            <button 
+            <button
               onClick={() => setIsAnnual(true)}
               className={`px-7 py-3 rounded-xl flex items-center gap-2 transition ${isAnnual ? 'bg-white text-black font-semibold' : 'hover:bg-white/10'}`}
             >
@@ -347,8 +351,8 @@ export default function Home() {
               key={index}
               whileHover={{ y: plan.popular ? -12 : -8 }}
               className={`relative rounded-3xl p-8 flex flex-col border transition-all ${
-                plan.popular 
-                  ? 'border-purple-500 bg-gradient-to-b from-purple-950/60 to-transparent scale-[1.04] shadow-2xl shadow-purple-500/25' 
+                plan.popular
+                  ? 'border-purple-500 bg-gradient-to-b from-purple-950/60 to-transparent scale-[1.04] shadow-2xl shadow-purple-500/25'
                   : 'border-white/10 hover:border-white/30 bg-zinc-900/70'
               }`}
             >
@@ -362,7 +366,9 @@ export default function Home() {
               <p className="text-gray-400 mt-1 text-sm">{plan.description}</p>
 
               <div className="my-8">
-                <span className="text-5xl font-bold">{plan.price}</span>
+                <span className="text-5xl font-bold">
+                  {plan.price.toLocaleString('hu-HU')}
+                </span>
                 <span className="text-gray-400"> Ft</span>
                 <p className="text-sm text-gray-500">{plan.period}</p>
               </div>
@@ -375,11 +381,11 @@ export default function Home() {
                 ))}
               </ul>
 
-              <button 
+              <button
                 onClick={() => alert(`${plan.name} csomag kiválasztva (demo)`)}
                 className={`w-full py-4 rounded-2xl font-semibold transition-all ${
-                  plan.popular 
-                    ? 'bg-gradient-to-r from-purple-500 to-cyan-500 hover:brightness-110 text-black' 
+                  plan.popular
+                    ? 'bg-gradient-to-r from-purple-500 to-cyan-500 hover:brightness-110 text-black'
                     : 'bg-white/10 hover:bg-white/20 border border-white/20'
                 }`}
               >
@@ -395,7 +401,7 @@ export default function Home() {
         <h2 className="text-5xl font-bold mb-6">Kezdj el időpontokat fogadni még ma</h2>
         <p className="text-xl text-gray-400 mb-10">Csatlakozz több mint 1800 elégedett szakemberhez</p>
         
-        <button 
+        <button
           onClick={() => alert('Regisztráció indítása...')}
           className="px-14 py-6 text-xl font-semibold rounded-2xl bg-gradient-to-r from-purple-600 to-cyan-500 hover:brightness-110 transition shadow-2xl"
         >
