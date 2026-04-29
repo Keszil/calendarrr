@@ -10,9 +10,7 @@ export default function Home() {
 
   const times = ['09:00','10:00','11:00','13:00','14:00','15:00']
 
-  const handleNext = () => {
-    if (step < 3) setStep(step + 1)
-  }
+  const handleNext = () => step < 3 && setStep(step + 1)
 
   const handleBooking = () => {
     setLoading(true)
@@ -35,115 +33,123 @@ export default function Home() {
       <header className="relative z-10 flex justify-between items-center p-6 max-w-7xl mx-auto">
         <h1 className="text-xl font-bold">BookingApp</h1>
         <div className="flex gap-4">
-          <button className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition">
+          <button className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition">
             Login
           </button>
-          <button className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:shadow-[0_0_25px_rgba(168,85,247,0.7)] transition">
+          <button className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500">
             Sign up
           </button>
         </div>
       </header>
 
       {/* HERO */}
-      <section className="relative z-10 text-center max-w-4xl mx-auto mt-16 mb-16 px-6">
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-          Foglalj időpontot 2 kattintással
+      <section className="relative z-10 text-center max-w-4xl mx-auto mt-16 px-6">
+        <motion.h1 initial={{opacity:0,y:40}} animate={{opacity:1,y:0}}
+          className="text-6xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+          Foglalások kezelése. Automatizálva.
         </motion.h1>
+
         <p className="text-gray-400 mt-6 text-lg">
-          Modern, gyors és automatizált időpontfoglalás.
+          Küldj egy linket — a rendszer elintézi a többit.
         </p>
+
+        <div className="mt-8 flex justify-center gap-4">
+          <button className="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-blue-500 hover:scale-105 transition">
+            Kezdés ingyen
+          </button>
+          <button className="px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 transition">
+            Demo
+          </button>
+        </div>
       </section>
 
-      {/* STEP INDICATOR */}
-      <div className="relative z-10 flex justify-center gap-4 mb-6">
-        {[1,2,3].map(s => (
-          <div key={s} className={`w-3 h-3 rounded-full ${step>=s ? 'bg-purple-500' : 'bg-gray-600'}`} />
-        ))}
-      </div>
+      {/* PROBLEM */}
+      <section className="relative z-10 max-w-5xl mx-auto mt-24 grid md:grid-cols-2 gap-10 px-6">
+        <div className="space-y-4 text-red-400">
+          <p>❌ Végtelen e-mailek</p>
+          <p>❌ “Mikor jó neked?” ping-pong</p>
+          <p>❌ Elfelejtett meetingek</p>
+        </div>
+        <div className="space-y-4 text-green-400">
+          <p>✔ Egy link → minden megoldva</p>
+          <p>✔ Automatikus foglalás</p>
+          <p>✔ Naptár szinkron</p>
+        </div>
+      </section>
 
-      {/* STEP FLOW */}
-      <section className="relative z-10 max-w-4xl mx-auto px-6">
+      {/* HOW IT WORKS */}
+      <section className="relative z-10 max-w-6xl mx-auto mt-24 grid md:grid-cols-3 gap-6 px-6">
+        {[
+          'Állítsd be az elérhetőséged',
+          'Küldd el a linked',
+          'Mások foglalnak'
+        ].map((t,i)=>(
+          <div key={i} className="bg-white/5 p-6 rounded-2xl border border-white/10">
+            {t}
+          </div>
+        ))}
+      </section>
+
+      {/* FEATURES */}
+      <section className="relative z-10 max-w-6xl mx-auto mt-24 grid md:grid-cols-3 gap-6 px-6">
+        {[
+          'Okos időpont kezelés',
+          'Egyedi link',
+          'Automatikus emlékeztetők'
+        ].map((t,i)=>(
+          <div key={i} className="bg-white/5 p-6 rounded-2xl border border-white/10">
+            {t}
+          </div>
+        ))}
+      </section>
+
+      {/* BOOKING DEMO */}
+      <section className="relative z-10 max-w-4xl mx-auto mt-32 px-6">
+
+        <h2 className="text-3xl mb-6 text-center">Így néz ki egy foglalás</h2>
+
+        <div className="flex justify-center gap-4 mb-6">
+          {[1,2,3].map(s => (
+            <div key={s} className={`w-3 h-3 rounded-full ${step>=s ? 'bg-purple-500':'bg-gray-600'}`} />
+          ))}
+        </div>
 
         <AnimatePresence mode="wait">
 
-          {/* STEP 1 */}
-          {step === 1 && (
-            <motion.div key="step1" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-              <h2 className="text-2xl mb-6">Dátum kiválasztása</h2>
-
-              <div className="grid grid-cols-7 gap-3">
-                {[...Array(30)].map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={()=>setSelectedDate(i+1)}
-                    className={`p-3 rounded-xl transition ${
-                      selectedDate===i+1
-                        ? 'bg-gradient-to-r from-purple-500 to-blue-500 shadow-[0_0_20px_rgba(168,85,247,0.8)]'
-                        : 'bg-white/5 hover:bg-white/10'
-                    }`}>
+          {step===1 && (
+            <motion.div key="1" initial={{opacity:0}} animate={{opacity:1}}>
+              <div className="grid grid-cols-7 gap-2">
+                {[...Array(14)].map((_,i)=>(
+                  <button key={i} onClick={()=>setSelectedDate(i)}
+                    className="p-2 bg-white/5 rounded-xl hover:bg-white/10">
                     {i+1}
                   </button>
                 ))}
               </div>
-
-              <button onClick={handleNext} className="mt-6 px-6 py-3 bg-purple-600 rounded-xl hover:shadow-[0_0_20px_rgba(168,85,247,0.7)]">
-                Tovább
-              </button>
+              <button onClick={handleNext} className="mt-4 px-6 py-2 bg-purple-500 rounded-xl">Tovább</button>
             </motion.div>
           )}
 
-          {/* STEP 2 */}
-          {step === 2 && (
-            <motion.div key="step2" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-              <h2 className="text-2xl mb-6">Időpont kiválasztása</h2>
-
-              <div className="grid grid-cols-2 gap-4">
-                {times.map(t => (
-                  <button
-                    key={t}
-                    onClick={()=>setSelectedTime(t)}
-                    className={`p-4 rounded-xl transition ${
-                      selectedTime===t
-                        ? 'bg-gradient-to-r from-blue-500 to-cyan-500 shadow-[0_0_20px_rgba(59,130,246,0.8)]'
-                        : 'bg-white/5 hover:bg-white/10'
-                    }`}>
+          {step===2 && (
+            <motion.div key="2" initial={{opacity:0}} animate={{opacity:1}}>
+              <div className="grid grid-cols-2 gap-3">
+                {times.map(t=>(
+                  <button key={t} onClick={()=>setSelectedTime(t)}
+                    className="p-3 bg-white/5 rounded-xl hover:bg-white/10">
                     {t}
                   </button>
                 ))}
               </div>
-
-              <button onClick={handleNext} className="mt-6 px-6 py-3 bg-blue-600 rounded-xl hover:shadow-[0_0_20px_rgba(59,130,246,0.7)]">
-                Tovább
-              </button>
+              <button onClick={handleNext} className="mt-4 px-6 py-2 bg-blue-500 rounded-xl">Tovább</button>
             </motion.div>
           )}
 
-          {/* STEP 3 */}
-          {step === 3 && (
-            <motion.div key="step3" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-              <h2 className="text-2xl mb-6">Adatok</h2>
-
-              <div className="space-y-4">
-                <input placeholder="Név" className="w-full p-4 rounded-xl bg-black/30 border border-white/10 focus:border-purple-500 outline-none" />
-                <input placeholder="Email" className="w-full p-4 rounded-xl bg-black/30 border border-white/10 focus:border-blue-500 outline-none" />
-
-                <button
-                  onClick={handleBooking}
-                  className="w-full p-4 rounded-xl bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 flex justify-center items-center hover:scale-105 transition">
-
-                  {loading ? (
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 1 }}
-                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                    />
-                  ) : 'Foglalás megerősítése'}
-
-                </button>
-              </div>
+          {step===3 && (
+            <motion.div key="3" initial={{opacity:0}} animate={{opacity:1}}>
+              <input placeholder="Email" className="w-full p-3 bg-white/5 rounded-xl mb-4"/>
+              <button onClick={handleBooking} className="w-full p-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl">
+                {loading ? 'Betöltés...' : 'Foglalás'}
+              </button>
             </motion.div>
           )}
 
@@ -151,28 +157,11 @@ export default function Home() {
 
       </section>
 
-      {/* FEATURES */}
-      <section className="relative z-10 max-w-6xl mx-auto mt-24 grid md:grid-cols-3 gap-6 px-6">
-        {[
-          {title: '24/7 foglalás', desc: 'Bármikor elérhető rendszer'},
-          {title: 'Automatikus emlékeztetők', desc: 'Email + SMS'},
-          {title: 'Nagyobb bevétel', desc: 'Kevesebb lemondás'}
-        ].map((f, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ y: -5 }}
-            className="bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur">
-            <h3 className="text-lg mb-2">{f.title}</h3>
-            <p className="text-gray-400">{f.desc}</p>
-          </motion.div>
-        ))}
-      </section>
-
-      {/* CTA */}
+      {/* FINAL CTA */}
       <section className="relative z-10 text-center mt-24 mb-20">
-        <h2 className="text-4xl mb-6">Készen állsz?</h2>
-        <button className="px-10 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-blue-500 hover:scale-110 transition">
-          Indulás most
+        <h2 className="text-4xl mb-6">Kezdj el foglalásokat fogadni még ma</h2>
+        <button className="px-10 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-blue-500">
+          Regisztráció ingyen
         </button>
       </section>
 
