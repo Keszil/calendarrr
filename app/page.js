@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-// Ez segít a Next.js-nek, hogy ne próbálja statikusan renderelni az oldalt
 export const dynamic = 'force-dynamic'
 
 export default function Home() {
@@ -15,7 +14,7 @@ export default function Home() {
 
   const times = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00']
 
-  // Dark / Light mode váltás
+  // Dark / Light mode
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark')
@@ -323,14 +322,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PRICING SECTION */}
+      {/* PRICING */}
       <section id="pricing" className="relative z-20 max-w-6xl mx-auto pt-28 pb-32 px-6">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold tracking-tight">Válaszd ki a számodra tökéletes csomagot</h2>
           <p className="text-xl text-gray-400 mt-4">14 nap ingyen. Bármikor lemondható.</p>
         </div>
 
-        {/* Éves / Havi kapcsoló */}
         <div className="flex justify-center mb-12">
           <div className="bg-zinc-900 border border-white/10 rounded-2xl p-1 flex">
             <button
