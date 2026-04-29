@@ -61,43 +61,43 @@ export default function Home() {
   ]
 
   const pricingPlans = [
-    {
-      name: "Ingyenes",
-      price: "0",
-      period: "",
-      description: "Kipróbálásra tökéletes",
-      features: ["1 foglalási link", "Korlátozott időpontok", "Alap email visszaigazolás"],
-      cta: "Ingyen kezdés",
-      popular: false,
-    },
-    {
-      name: "Starter",
-      price: isAnnual ? "4.900" : "5.900",
-      period: isAnnual ? "/hó (éves)" : "/hó",
-      description: "Egyéni szakembereknek",
-      features: ["Korlátlan linkek", "Valós idejű naptár", "Automatikus emlékeztetők", "Zoom integráció", "Alap analitika"],
-      cta: "Starter csomag",
-      popular: false,
-    },
-    {
-      name: "Pro",
-      price: isAnnual ? "9.900" : "12.900",
-      period: isAnnual ? "/hó (éves)" : "/hó",
-      description: "A legnépszerűbb választás",
-      features: ["Minden a Starterben", "Egyéni branding", "Csoportfoglalás", "Haladó analitika", "Prioritásos támogatás", "Nincs Időpont.app logó"],
-      cta: "Pro csomag indítása",
-      popular: true,
-    },
-    {
-      name: "Business",
-      price: isAnnual ? "19.900" : "24.900",
-      period: isAnnual ? "/hó (éves)" : "/hó",
-      description: "Csapatoknak és stúdióknak",
-      features: ["Minden a Proban", "Több felhasználó", "Csapat naptár", "API hozzáférés", "Fehér címke", "Dedikált támogatás"],
-      cta: "Business csomag",
-      popular: false,
-    }
-  ]
+  {
+    name: "Ingyenes",
+    price: 0,
+    period: "",
+    description: "Kipróbálásra tökéletes",
+    features: ["1 foglalási link", "Korlátozott időpontok", "Alap email visszaigazolás"],
+    cta: "Ingyen kezdés",
+    popular: false,
+  },
+  {
+    name: "Starter",
+    price: isAnnual ? 4900 : 5900,
+    period: isAnnual ? "/hó (éves)" : "/hó",
+    description: "Egyéni szakembereknek",
+    features: ["Korlátlan linkek", "Valós idejű naptár", "Automatikus emlékeztetők", "Zoom integráció", "Alap analitika"],
+    cta: "Starter csomag",
+    popular: false,
+  },
+  {
+    name: "Pro",
+    price: isAnnual ? 9900 : 12900,
+    period: isAnnual ? "/hó (éves)" : "/hó",
+    description: "A legnépszerűbb választás",
+    features: ["Minden a Starterben", "Egyéni branding", "Csoportfoglalás", "Haladó analitika", "Prioritásos támogatás", "Nincs Időpont.app logó"],
+    cta: "Pro csomag indítása",
+    popular: true,
+  },
+  {
+    name: "Business",
+    price: isAnnual ? 19900 : 24900,
+    period: isAnnual ? "/hó (éves)" : "/hó",
+    description: "Csapatoknak és stúdióknak",
+    features: ["Minden a Proban", "Több felhasználó", "Csapat naptár", "API hozzáférés", "Fehér címke", "Dedikált támogatás"],
+    cta: "Business csomag",
+    popular: false,
+  }
+]
 
   return (
     <main className="relative min-h-screen bg-zinc-950 dark:bg-zinc-950 text-white overflow-hidden transition-colors duration-300">
