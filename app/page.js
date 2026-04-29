@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export const dynamic = 'force-dynamic'
@@ -31,8 +31,8 @@ export default function Home() {
     }, 1500)
   }
 
-  // Pricing tervek
-  const pricingPlans = [
+  // Pricing tervek – useMemo védi a szerveroldali rendereléstől
+  const pricingPlans = useMemo(() => [
     {
       name: "Ingyenes",
       price: 0,
@@ -69,7 +69,7 @@ export default function Home() {
       cta: "Business csomag",
       popular: false,
     }
-  ]
+  ], [isAnnual])
 
   const testimonials = [
     {
@@ -104,7 +104,7 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen bg-zinc-950 dark:bg-zinc-950 text-white overflow-hidden transition-colors duration-300">
-      
+
       {/* Háttér animáció */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div
@@ -322,13 +322,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PRICING */}
+      {/* PRICING SECTION */}
       <section id="pricing" className="relative z-20 max-w-6xl mx-auto pt-28 pb-32 px-6">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold tracking-tight">Válaszd ki a számodra tökéletes csomagot</h2>
           <p className="text-xl text-gray-400 mt-4">14 nap ingyen. Bármikor lemondható.</p>
         </div>
 
+        {/* Éves / Havi kapcsoló */}
         <div className="flex justify-center mb-12">
           <div className="bg-zinc-900 border border-white/10 rounded-2xl p-1 flex">
             <button
@@ -367,9 +368,7 @@ export default function Home() {
               <p className="text-gray-400 mt-1 text-sm">{plan.description}</p>
 
               <div className="my-8">
-                <span className="text-5xl font-bold">
-                  {plan.price.toLocaleString('hu-HU')}
-                </span>
+                <span className="text-5xl font-bold">{plan.price.toLocaleString('hu-HU')}</span>
                 <span className="text-gray-400"> Ft</span>
                 <p className="text-sm text-gray-500">{plan.period}</p>
               </div>
