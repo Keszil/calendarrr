@@ -1,8 +1,7 @@
 'use client'
+
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-
-export const dynamic = 'force-dynamic'
 
 export default function Home() {
   const [step, setStep] = useState(1)
@@ -16,10 +15,12 @@ export default function Home() {
 
   // Dark / Light mode
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
+    if (typeof document !== 'undefined') {
+      if (isDark) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
     }
   }, [isDark])
 
@@ -31,7 +32,7 @@ export default function Home() {
     }, 1500)
   }
 
-  // Pricing tervek – useMemo védi a szerveroldali rendereléstől
+  // Pricing tervek
   const pricingPlans = useMemo(() => [
     {
       name: "Ingyenes",
@@ -104,7 +105,6 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen bg-zinc-950 dark:bg-zinc-950 text-white overflow-hidden transition-colors duration-300">
-
       {/* Háttér animáció */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div
@@ -132,7 +132,7 @@ export default function Home() {
       {/* NAVBAR */}
       <header className="relative z-50 flex justify-between items-center p-6 max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold tracking-tighter">Időpont.app</h1>
-        
+       
         <div className="flex items-center gap-6">
           <button
             onClick={() => setIsDark(!isDark)}
@@ -155,16 +155,13 @@ export default function Home() {
         <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-5 py-2 mb-8 text-sm">
           <span className="text-emerald-400">●</span> Már több mint 1800 szakember használja Magyarországon
         </div>
-
         <h1 className="text-6xl md:text-7xl font-bold tracking-tighter leading-tight">
           Hagyd abba az időpont-<span className="bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">egyeztetést</span>.
         </h1>
-
         <p className="mt-6 text-xl text-gray-400 max-w-2xl mx-auto">
-          Küldj egy linket az ügyfeleidnek, és ők maguktól lefoglalják a legjobb időpontot. 
+          Küldj egy linket az ügyfeleidnek, és ők maguktól lefoglalják a legjobb időpontot.
           Te pedig több időt nyersz a valódi munkára.
         </p>
-
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
           <button
             onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
@@ -176,7 +173,6 @@ export default function Home() {
             Hogyan működik? →
           </button>
         </div>
-
         <p className="mt-6 text-sm text-gray-500">14 nap ingyen próba • Nincs kártyaadat szükséges • Bármikor lemondható</p>
       </section>
 
@@ -230,14 +226,13 @@ export default function Home() {
       {/* BOOKING DEMO */}
       <section className="relative z-20 max-w-4xl mx-auto mt-32 px-6">
         <h2 className="text-4xl font-semibold text-center mb-10">Így néz ki a te foglalási oldalad</h2>
-        
+       
         <div className="bg-zinc-900/80 border border-white/10 rounded-3xl p-10 backdrop-blur-xl">
           <div className="flex justify-center gap-4 mb-8">
             {[1,2,3].map(s => (
               <div key={s} className={`w-3.5 h-3.5 rounded-full transition-all ${step >= s ? 'bg-gradient-to-r from-purple-500 to-cyan-500 scale-125' : 'bg-gray-700'}`} />
             ))}
           </div>
-
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div key="1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -256,7 +251,6 @@ export default function Home() {
                 <button onClick={() => setStep(2)} className="mt-8 w-full py-4 bg-white text-black font-semibold rounded-2xl">Tovább →</button>
               </motion.div>
             )}
-
             {step === 2 && (
               <motion.div key="2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <p className="text-center mb-6 text-gray-400">Válassz időpontot</p>
@@ -274,13 +268,12 @@ export default function Home() {
                 <button onClick={() => setStep(3)} className="mt-8 w-full py-4 bg-white text-black font-semibold rounded-2xl">Tovább az adatokhoz →</button>
               </motion.div>
             )}
-
             {step === 3 && (
               <motion.div key="3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <input 
-                  type="email" 
-                  placeholder="Add meg az email címed" 
-                  className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl mb-6 focus:outline-none focus:border-purple-500" 
+                <input
+                  type="email"
+                  placeholder="Add meg az email címed"
+                  className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl mb-6 focus:outline-none focus:border-purple-500"
                 />
                 <button
                   onClick={handleBooking}
@@ -298,7 +291,7 @@ export default function Home() {
       {/* TESTIMONIALS */}
       <section className="relative z-20 max-w-6xl mx-auto mt-32 px-6">
         <h2 className="text-4xl font-semibold text-center mb-12">Mit mondanak a felhasználóink?</h2>
-        
+       
         <div className="grid md:grid-cols-2 gap-8">
           {testimonials.map((testimonial, i) => (
             <motion.div
@@ -363,16 +356,13 @@ export default function Home() {
                   LEGNÉPSZERŰBB
                 </div>
               )}
-
               <h3 className="text-2xl font-semibold">{plan.name}</h3>
               <p className="text-gray-400 mt-1 text-sm">{plan.description}</p>
-
               <div className="my-8">
                 <span className="text-5xl font-bold">{plan.price.toLocaleString('hu-HU')}</span>
                 <span className="text-gray-400"> Ft</span>
                 <p className="text-sm text-gray-500">{plan.period}</p>
               </div>
-
               <ul className="space-y-4 mb-10 flex-1 text-sm">
                 {plan.features.map((f, i) => (
                   <li key={i} className="flex items-center gap-3">
@@ -380,7 +370,6 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-
               <button
                 onClick={() => alert(`${plan.name} csomag kiválasztva (demo)`)}
                 className={`w-full py-4 rounded-2xl font-semibold transition-all ${
@@ -400,7 +389,7 @@ export default function Home() {
       <section className="relative z-20 text-center py-24 border-t border-white/10 bg-black/40">
         <h2 className="text-5xl font-bold mb-6">Kezdj el időpontokat fogadni még ma</h2>
         <p className="text-xl text-gray-400 mb-10">Csatlakozz több mint 1800 elégedett szakemberhez</p>
-        
+       
         <button
           onClick={() => alert('Regisztráció indítása...')}
           className="px-14 py-6 text-xl font-semibold rounded-2xl bg-gradient-to-r from-purple-600 to-cyan-500 hover:brightness-110 transition shadow-2xl"
