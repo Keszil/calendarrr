@@ -52,18 +52,16 @@ export default function Home() {
         </motion.h1>
 
         <p className="text-gray-400 mt-6 text-lg max-w-xl mx-auto">
-          Küldj egy linket — az ügyfeleid kiválasztják a megfelelő időpontot.
-          Automatikusan. Konfliktus nélkül.
+          Egyetlen link — és az ügyfeleid maguktól lefoglalják a megfelelő időpontot.
         </p>
 
         <div className="mt-10 flex justify-center gap-4">
           <button className="group relative px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 font-semibold overflow-hidden">
             <span className="relative z-10">Kezdés ingyen</span>
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition"/>
             <div className="absolute inset-0 blur-xl opacity-50 group-hover:opacity-100 transition bg-gradient-to-r from-purple-500 to-blue-500"/>
           </button>
 
-          <button className="px-8 py-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] transition">
+          <button className="px-8 py-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur hover:bg-white/10 transition">
             Megnézem hogyan működik
           </button>
         </div>
@@ -72,15 +70,15 @@ export default function Home() {
       {/* PROBLEM / SOLUTION */}
       <section className="relative z-10 max-w-5xl mx-auto mt-24 grid md:grid-cols-2 gap-10 px-6">
         <div className="space-y-4 text-gray-400">
-          <p>Végtelen e-mailek</p>
-          <p>“Mikor jó neked?” ping-pong</p>
-          <p>Elfelejtett meetingek</p>
+          <p>Manuális időpont egyeztetés</p>
+          <p>Töredezett kommunikáció</p>
+          <p>Időveszteség minden lépésnél</p>
         </div>
 
         <div className="space-y-4 text-white">
-          <p className="text-purple-400">Egy link. Ennyi.</p>
-          <p className="text-blue-400">Automatikus foglalás</p>
-          <p className="text-cyan-400">Valós idejű naptár sync</p>
+          <p className="text-purple-400">Egyetlen megosztható link</p>
+          <p className="text-blue-400">Automatikusan kezelt foglalások</p>
+          <p className="text-cyan-400">Valós idejű elérhetőség</p>
         </div>
       </section>
 
@@ -92,29 +90,14 @@ export default function Home() {
           'Az ügyfelek lefoglalják'
         ].map((t,i)=>(
           <motion.div key={i} whileHover={{ y:-5 }}
-            className="group bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur hover:bg-white/10 transition hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+            className="bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur hover:bg-white/10 transition">
             {t}
           </motion.div>
         ))}
       </section>
 
-      {/* FEATURES */}
-      <section className="relative z-10 max-w-6xl mx-auto mt-24 grid md:grid-cols-3 gap-6 px-6">
-        {[
-          {title:'Csak a szabad időpontok',desc:'Automatikusan kiszűri a foglalt slotokat'},
-          {title:'Saját foglalási link',desc:'app.com/te-neved'},
-          {title:'Automatikus emlékeztetők',desc:'Kevesebb lemondás, több bevétel'}
-        ].map((f,i)=>(
-          <div key={i} className="bg-white/5 p-6 rounded-2xl border border-white/10">
-            <h3 className="text-lg mb-2">{f.title}</h3>
-            <p className="text-gray-400">{f.desc}</p>
-          </div>
-        ))}
-      </section>
-
       {/* BOOKING DEMO */}
       <section className="relative z-10 max-w-4xl mx-auto mt-32 px-6">
-
         <h2 className="text-3xl mb-6 text-center">Így néz ki a foglalási oldalad</h2>
 
         <div className="flex justify-center gap-4 mb-6">
@@ -124,7 +107,6 @@ export default function Home() {
         </div>
 
         <AnimatePresence mode="wait">
-
           {step===1 && (
             <motion.div key="1" initial={{opacity:0}} animate={{opacity:1}}>
               <div className="grid grid-cols-7 gap-2">
@@ -135,9 +117,7 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <button onClick={handleNext} className="mt-4 px-6 py-2 bg-purple-500 rounded-xl">
-                Tovább
-              </button>
+              <button onClick={handleNext} className="mt-4 px-6 py-2 bg-purple-500 rounded-xl">Tovább</button>
             </motion.div>
           )}
 
@@ -151,9 +131,7 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <button onClick={handleNext} className="mt-4 px-6 py-2 bg-blue-500 rounded-xl">
-                Tovább
-              </button>
+              <button onClick={handleNext} className="mt-4 px-6 py-2 bg-blue-500 rounded-xl">Tovább</button>
             </motion.div>
           )}
 
@@ -166,20 +144,17 @@ export default function Home() {
               </button>
             </motion.div>
           )}
-
         </AnimatePresence>
-
       </section>
 
-      {/* FINAL CTA */}
+      {/* CTA */}
       <section className="relative z-10 text-center mt-24 mb-20">
         <h2 className="text-4xl mb-6 font-semibold">
           Kezdj el időpontokat fogadni ma.
         </h2>
 
-        <button className="group relative px-10 py-4 rounded-2xl bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 font-semibold overflow-hidden">
-          <span className="relative z-10">Regisztráció ingyen</span>
-          <div className="absolute inset-0 blur-xl opacity-50 group-hover:opacity-100 transition bg-gradient-to-r from-purple-500 to-blue-500"/>
+        <button className="px-10 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-blue-500">
+          Regisztráció ingyen
         </button>
       </section>
 
