@@ -3,10 +3,13 @@
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Ez fontos a Vercel build hibájának megoldásához
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
   const [step, setStep] = useState(1)
-  const [selectedDate, setSelectedDate] = useState<number | null>(null)
-  const [selectedTime, setSelectedTime] = useState<string | null>(null)
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [selectedTime, setSelectedTime] = useState(null)
   const [loading, setLoading] = useState(false)
   const [isDark, setIsDark] = useState(true)
   const [isAnnual, setIsAnnual] = useState(true)
