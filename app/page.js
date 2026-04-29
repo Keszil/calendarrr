@@ -2,6 +2,9 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Ez segít a Next.js-nek, hogy ne próbálja statikusan renderelni az oldalt
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
   const [step, setStep] = useState(1)
   const [selectedDate, setSelectedDate] = useState<number | null>(null)
@@ -12,7 +15,7 @@ export default function Home() {
 
   const times = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00']
 
-  // Dark/Light mode
+  // Dark / Light mode váltás
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark')
@@ -29,7 +32,7 @@ export default function Home() {
     }, 1500)
   }
 
-  // Pricing tervek – IDE TETTÜK, hogy hozzáférjen a state-hez
+  // Pricing tervek
   const pricingPlans = [
     {
       name: "Ingyenes",
@@ -103,7 +106,7 @@ export default function Home() {
   return (
     <main className="relative min-h-screen bg-zinc-950 dark:bg-zinc-950 text-white overflow-hidden transition-colors duration-300">
       
-      {/* FEJLESZTETT HÁTTÉR ANIMÁCIÓ */}
+      {/* Háttér animáció */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div
           animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
