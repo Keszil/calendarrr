@@ -9,12 +9,15 @@ export default function Home() {
   const [step, setStep] = useState(1)
   const [selectedDate, setSelectedDate] = useState(null)
   const [selectedTime, setSelectedTime] = useState(null)
+  const [selectedMonth, setSelectedMonth] = useState(4) // Május alapértelmezett (0-index)
   const [loading, setLoading] = useState(false)
   const [isDark, setIsDark] = useState(false)
   const [isAnnual, setIsAnnual] = useState(true)
 
+  const months = ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"]
   const times = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00']
 
+  // Dark mode
   useEffect(() => {
     if (typeof document !== 'undefined') {
       isDark
@@ -71,41 +74,31 @@ export default function Home() {
   ], [isAnnual])
 
   const testimonials = [
-    {
-      name: "Kovács Anna",
-      role: "Fodrász & Szalon tulajdonos",
-      text: "Azóta, hogy használom az Időpont.app-ot, heti 6-8 órát spórolok az egyeztetéseken. Az ügyfelek imádják, hogy maguk tudnak időpontot foglalni.",
-      rating: 5,
-      avatar: "👩‍🦰"
-    },
-    {
-      name: "Nagy Márk",
-      role: "Életvezetési coach",
-      text: "Sokkal professzionálisabb lett a szolgáltatásom. Kevesebb lemondás, több betelt időpont.",
-      rating: 5,
-      avatar: "🧔"
-    },
-    {
-      name: "Szabó Eszter",
-      role: "Jogi tanácsadó",
-      text: "A korábbi végtelen email-váltás helyett most tényleg csak a munkára kell koncentrálnom. Nagyon intuitív és megbízható.",
-      rating: 5,
-      avatar: "👩‍💼"
-    },
-    {
-      name: "Tóth Péter",
-      role: "Személyi edző",
-      text: "Az ügyfeleim 90%-a magától foglal. Hihetetlenül leegyszerűsítette az életemet.",
-      rating: 5,
-      avatar: "💪"
-    }
+    { name: "Kovács Anna", role: "Fodrász & Szalon tulajdonos", text: "Heti 6-8 órát spórolok az egyeztetéseken. Az ügyfelek imádják, hogy maguk tudnak időpontot foglalni.", rating: 5, avatar: "👩‍🦰" },
+    { name: "Nagy Márk", role: "Életvezetési coach", text: "Sokkal professzionálisabb lett a szolgáltatásom. Kevesebb lemondás, több betelt időpont.", rating: 5, avatar: "🧔" },
+    { name: "Szabó Eszter", role: "Jogi tanácsadó", text: "A korábbi végtelen email-váltás helyett most tényleg csak a munkára kell koncentrálnom.", rating: 5, avatar: "👩‍💼" },
+    { name: "Tóth Péter", role: "Személyi edző", text: "Az ügyfeleim 90%-a magától foglal. Hihetetlenül leegyszerűsítette az életemet.", rating: 5, avatar: "💪" }
   ]
 
   return (
-    <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+    <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 relative overflow-hidden">
       
+      {/* Finom mozgó absztrakt háttér animáció */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <motion.div
+          animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 bg-[radial-gradient(at_25%_30%,rgba(16,185,129,0.09),transparent_55%)]"
+        />
+        <motion.div
+          animate={{ backgroundPosition: ['100% 40%', '0% 70%', '100% 40%'] }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear", delay: 12 }}
+          className="absolute inset-0 bg-[radial-gradient(at_75%_65%,rgba(16,185,129,0.07),transparent_60%)]"
+        />
+      </div>
+
       {/* NAVBAR */}
-      <header className="sticky top-0 z-50 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800">
+      <header className="sticky top-0 z-50 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">I</div>
@@ -113,10 +106,7 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-8">
-            <button
-              onClick={() => setIsDark(!isDark)}
-              className="text-2xl hover:text-emerald-600 transition-colors"
-            >
+            <button onClick={() => setIsDark(!isDark)} className="text-2xl hover:text-emerald-600 transition-colors">
               {isDark ? '☀️' : '🌙'}
             </button>
             <button className="font-medium hover:text-emerald-600 transition-colors">Bejelentkezés</button>
@@ -131,14 +121,13 @@ export default function Home() {
       </header>
 
       {/* HERO */}
-      <section className="pt-28 pb-24">
+      <section className="pt-28 pb-24 relative z-10">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h1 className="text-6xl md:text-7xl font-bold tracking-tighter leading-none mb-8">
             Időpontok egyeztetése<br />egyszerűen.
           </h1>
           <p className="text-2xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto mb-12">
-            Küldj egy linket az ügyfeleidnek, és ők maguktól lefoglalják a legmegfelelőbb időpontot. 
-            Te pedig több időt nyersz a valódi munkára.
+            Küldj egy linket az ügyfeleidnek, és ők maguktól lefoglalják a legmegfelelőbb időpontot.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -152,13 +141,11 @@ export default function Home() {
               Hogyan működik?
             </button>
           </div>
-
-          <p className="mt-10 text-zinc-500">14 nap ingyen próba • Nincs kártya szükséges • Bármikor lemondható</p>
         </div>
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="py-24 bg-white dark:bg-zinc-950">
+      <section className="py-20 bg-white dark:bg-zinc-950 relative z-10">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-4xl font-semibold text-center mb-16">Mindössze 3 lépés</h2>
           <div className="grid md:grid-cols-3 gap-12">
@@ -172,26 +159,43 @@ export default function Home() {
                   {item.num}
                 </div>
                 <h3 className="text-2xl font-semibold mb-4">{item.title}</h3>
-                <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">{item.desc}</p>
+                <p className="text-zinc-600 dark:text-zinc-400">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* NAGY BOOKING DEMO (az oldal felét foglalja el) */}
-      <section className="py-20 bg-zinc-50 dark:bg-zinc-900">
+      {/* NAGY DEMO SÁV (az oldal közepén, szélesebb) */}
+      <section className="py-20 bg-zinc-50 dark:bg-zinc-900 relative z-10">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-4xl font-semibold text-center mb-4">Így néz ki a te foglalási oldalad</h2>
           <p className="text-center text-zinc-500 mb-12">Pontosan így fog kinézni az ügyfeleid számára</p>
 
-          <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-2xl overflow-hidden mx-auto" style={{ maxWidth: '960px' }}>
+          <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-2xl overflow-hidden mx-auto" style={{ maxWidth: '920px' }}>
             <div className="p-12 md:p-16">
-              <div className="flex justify-center gap-3 mb-12">
+              {/* Hónap választó */}
+              <div className="flex justify-center flex-wrap gap-2 mb-10">
+                {months.map((month, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedMonth(idx)}
+                    className={`px-6 py-2 text-sm rounded-full transition-all ${
+                      selectedMonth === idx
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-zinc-100 dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600'
+                    }`}
+                  >
+                    {month}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex justify-center gap-3 mb-10">
                 {[1, 2, 3].map((s) => (
                   <div
                     key={s}
-                    className={`h-2.5 flex-1 max-w-[120px] rounded-full transition-all ${
+                    className={`h-2.5 flex-1 max-w-[110px] rounded-full transition-all ${
                       step >= s ? 'bg-emerald-600' : 'bg-zinc-200 dark:bg-zinc-700'
                     }`}
                   />
@@ -208,7 +212,9 @@ export default function Home() {
                           key={i}
                           onClick={() => setSelectedDate(i)}
                           className={`aspect-square rounded-2xl text-sm font-medium transition-all ${
-                            selectedDate === i ? 'bg-emerald-600 text-white' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 bg-white dark:bg-zinc-800 border border-transparent'
+                            selectedDate === i
+                              ? 'bg-emerald-600 text-white'
+                              : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 bg-white dark:bg-zinc-800'
                           }`}
                         >
                           {i + 1}
@@ -230,7 +236,9 @@ export default function Home() {
                           key={t}
                           onClick={() => setSelectedTime(t)}
                           className={`py-4 rounded-2xl font-medium transition-all ${
-                            selectedTime === t ? 'bg-emerald-600 text-white' : 'border border-zinc-200 dark:border-zinc-700 hover:border-emerald-600'
+                            selectedTime === t
+                              ? 'bg-emerald-600 text-white'
+                              : 'border border-zinc-200 dark:border-zinc-700 hover:border-emerald-600'
                           }`}
                         >
                           {t}
@@ -266,7 +274,7 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-24 bg-white dark:bg-zinc-950">
+      <section className="py-24 bg-white dark:bg-zinc-950 relative z-10">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-4xl font-semibold text-center mb-16">Mit mondanak a felhasználóink?</h2>
           <div className="grid md:grid-cols-2 gap-8">
@@ -288,7 +296,7 @@ export default function Home() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" className="py-24 bg-zinc-50 dark:bg-zinc-900">
+      <section id="pricing" className="py-24 bg-zinc-50 dark:bg-zinc-900 relative z-10">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-semibold mb-4">Válaszd ki a számodra tökéletes csomagot</h2>
@@ -361,7 +369,7 @@ export default function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-24 bg-emerald-600 text-white">
+      <section className="py-24 bg-emerald-600 text-white relative z-10">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-5xl font-semibold mb-6">Kezdj el időpontokat fogadni még ma</h2>
           <p className="text-xl mb-10 opacity-90">Csatlakozz több mint 1800 elégedett szakemberhez</p>
