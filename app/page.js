@@ -7,12 +7,22 @@ export const dynamic = 'force-dynamic'
 
 export default function Home() {
   const [demoStep, setDemoStep] = useState(1)
-  const [selectedMonth, setSelectedMonth] = useState(4) // Május
+  const [selectedMonth, setSelectedMonth] = useState(4)
   const [isDark, setIsDark] = useState(false)
   const [isAnnual, setIsAnnual] = useState(true)
 
   const months = ["Jan", "Feb", "Már", "Ápr", "Máj", "Jún", "Júl", "Aug", "Szept", "Okt", "Nov", "Dec"]
   const times = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00']
+
+  // Motiváló szövegek animációhoz
+  const motivationalTexts = [
+    "Több idő a valódi munkára",
+    "Kevesebb lemondás, több bevétel",
+    "Ügyfelek maguktól foglalnak",
+    "Professzionálisabb szolgáltatás",
+    "Sokkal egyszerűbb élet",
+  ]
+  const [textIndex, setTextIndex] = useState(0)
 
   // Dark mode
   useEffect(() => {
@@ -23,11 +33,19 @@ export default function Home() {
     }
   }, [isDark])
 
-  // Automatikus demo lépésváltás (GIF hatás)
+  // Automatikus demo lépésváltás
   useEffect(() => {
     const interval = setInterval(() => {
       setDemoStep(prev => (prev % 3) + 1)
     }, 2800)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Motiváló szöveg váltás
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTextIndex(prev => (prev + 1) % motivationalTexts.length)
+    }, 3200)
     return () => clearInterval(interval)
   }, [])
 
@@ -71,10 +89,10 @@ export default function Home() {
   ], [isAnnual])
 
   const testimonials = [
-    { name: "Kovács Anna", role: "Fodrász & Szalon tulajdonos", text: "Heti 6-8 órát spórolok az egyeztetéseken. Az ügyfelek imádják, hogy maguk tudnak időpontot foglalni.", rating: 5, avatar: "👩‍🦰" },
-    { name: "Nagy Márk", role: "Életvezetési coach", text: "Sokkal professzionálisabb lett a szolgáltatásom. Kevesebb lemondás, több betelt időpont.", rating: 5, avatar: "🧔" },
-    { name: "Szabó Eszter", role: "Jogi tanácsadó", text: "A korábbi végtelen email-váltás helyett most tényleg csak a munkára kell koncentrálnom.", rating: 5, avatar: "👩‍💼" },
-    { name: "Tóth Péter", role: "Személyi edző", text: "Az ügyfeleim 90%-a magától foglal. Hihetetlenül leegyszerűsítette az életemet.", rating: 5, avatar: "💪" }
+    { name: "Kovács Anna", role: "Fodrász & Szalon tulajdonos", text: "Heti 6-8 órát spórolok az egyeztetéseken.", rating: 5, avatar: "👩‍🦰" },
+    { name: "Nagy Márk", role: "Életvezetési coach", text: "Sokkal professzionálisabb lett a szolgáltatásom.", rating: 5, avatar: "🧔" },
+    { name: "Szabó Eszter", role: "Jogi tanácsadó", text: "Végre nem email-váltással töltöm az időmet.", rating: 5, avatar: "👩‍💼" },
+    { name: "Tóth Péter", role: "Személyi edző", text: "Az ügyfeleim 90%-a magától foglal.", rating: 5, avatar: "💪" }
   ]
 
   return (
@@ -163,82 +181,115 @@ export default function Home() {
         </div>
       </section>
 
-      {/* KISEBB DEMO - BALRA IGAZÍTVA */}
+      {/* DEMO + ANIMÁLT SZÖVEG */}
       <section className="py-20 bg-zinc-50 dark:bg-zinc-900 relative z-10">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-4xl font-semibold text-center mb-4">Így néz ki a te foglalási oldalad</h2>
-          <p className="text-center text-zinc-500 mb-12">Pontosan így fog kinézni az ügyfeleid számára</p>
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+          
+          {/* Bal oldali DEMO (kisebb) */}
+          <div>
+            <h2 className="text-3xl font-semibold mb-6">Így néz ki a te foglalási oldalad</h2>
+            <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-xl overflow-hidden max-w-md">
+              <div className="p-8">
+                <div className="flex justify-center flex-wrap gap-2 mb-8">
+                  {months.map((month, idx) => (
+                    <div
+                      key={idx}
+                      className={`px-4 py-1 text-xs rounded-full transition-all ${
+                        selectedMonth === idx ? 'bg-emerald-600 text-white' : 'bg-zinc-100 dark:bg-zinc-700'
+                      }`}
+                    >
+                      {month}
+                    </div>
+                  ))}
+                </div>
 
-          <div className="max-w-lg mx-auto bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-xl overflow-hidden">
-            <div className="p-8">
-              {/* Hónap választó */}
-              <div className="flex justify-center flex-wrap gap-2 mb-8">
-                {months.map((month, idx) => (
-                  <div
-                    key={idx}
-                    className={`px-5 py-1.5 text-xs rounded-full transition-all ${
-                      selectedMonth === idx ? 'bg-emerald-600 text-white' : 'bg-zinc-100 dark:bg-zinc-700'
-                    }`}
-                  >
-                    {month}
-                  </div>
-                ))}
+                <div className="flex justify-center gap-3 mb-8">
+                  {[1, 2, 3].map((s) => (
+                    <div
+                      key={s}
+                      className={`h-2.5 flex-1 max-w-[70px] rounded-full transition-all ${
+                        demoStep >= s ? 'bg-emerald-600' : 'bg-zinc-200 dark:bg-zinc-700'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <AnimatePresence mode="wait">
+                  {demoStep === 1 && (
+                    <motion.div key="1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <p className="text-center mb-6 text-zinc-500">Válassz egy dátumot</p>
+                      <div className="grid grid-cols-7 gap-2">
+                        {[...Array(14)].map((_, i) => (
+                          <div key={i} className="aspect-square rounded-2xl bg-zinc-100 dark:bg-zinc-700 flex items-center justify-center text-sm">
+                            {i + 1}
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {demoStep === 2 && (
+                    <motion.div key="2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <p className="text-center mb-6 text-zinc-500">Válassz időpontot</p>
+                      <div className="grid grid-cols-2 gap-3">
+                        {times.map(t => (
+                          <div key={t} className="py-3 rounded-2xl bg-zinc-100 dark:bg-zinc-700 text-sm font-medium text-center">
+                            {t}
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {demoStep === 3 && (
+                    <motion.div key="3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <p className="text-center mb-6 text-zinc-500">Add meg az email címed</p>
+                      <div className="h-12 bg-zinc-100 dark:bg-zinc-700 rounded-2xl mb-6 flex items-center justify-center text-sm text-zinc-400">
+                        pelda@email.com
+                      </div>
+                      <div className="w-full py-4 bg-emerald-600 text-white font-medium rounded-2xl text-center">
+                        Foglalom ezt az időpontot
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
+            </div>
+          </div>
 
-              <div className="flex justify-center gap-3 mb-8">
-                {[1, 2, 3].map((s) => (
-                  <div
-                    key={s}
-                    className={`h-2.5 flex-1 max-w-[80px] rounded-full transition-all ${
-                      demoStep >= s ? 'bg-emerald-600' : 'bg-zinc-200 dark:bg-zinc-700'
-                    }`}
-                  />
-                ))}
-              </div>
-
+          {/* Jobb oldali animált szöveg */}
+          <div className="flex flex-col justify-center">
+            <div className="text-4xl md:text-5xl font-semibold leading-tight min-h-[180px] flex items-center">
               <AnimatePresence mode="wait">
-                {demoStep === 1 && (
-                  <motion.div key="1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <p className="text-center mb-6 text-zinc-500 font-medium">Válassz egy dátumot</p>
-                    <div className="grid grid-cols-7 gap-2">
-                      {[...Array(14)].map((_, i) => (
-                        <div key={i} className="aspect-square rounded-2xl bg-zinc-100 dark:bg-zinc-700 flex items-center justify-center text-sm">
-                          {i + 1}
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {demoStep === 2 && (
-                  <motion.div key="2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <p className="text-center mb-6 text-zinc-500 font-medium">Válassz időpontot</p>
-                    <div className="grid grid-cols-2 gap-3">
-                      {times.map(t => (
-                        <div key={t} className="py-4 rounded-2xl bg-zinc-100 dark:bg-zinc-700 text-sm font-medium text-center">
-                          {t}
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {demoStep === 3 && (
-                  <motion.div key="3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <p className="text-center mb-6 text-zinc-500 font-medium">Add meg az email címed</p>
-                    <div className="h-12 bg-zinc-100 dark:bg-zinc-700 rounded-2xl mb-6 flex items-center justify-center text-sm text-zinc-400">
-                      pelda@email.com
-                    </div>
-                    <div className="w-full py-4 bg-emerald-600 text-white font-medium rounded-2xl text-center">
-                      Foglalom ezt az időpontot
-                    </div>
-                  </motion.div>
-                )}
+                <motion.p
+                  key={textIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-emerald-600 dark:text-emerald-500"
+                >
+                  {motivationalTexts[textIndex]}
+                </motion.p>
               </AnimatePresence>
             </div>
+
+            <p className="text-xl text-zinc-600 dark:text-zinc-400 mt-6">
+              Csatlakozz több ezer elégedett szakemberhez és spórolj órákat minden héten.
+            </p>
+
+            <button
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              className="mt-10 px-10 py-4 text-lg font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-full inline-block w-fit transition"
+            >
+              Ingyen fiók létrehozása most →
+            </button>
           </div>
         </div>
       </section>
+
+      {/* TESTIMONIALS, PRICING, FINAL CTA ugyanaz marad... */}
+      {/* (a teljes kód túl hosszú lenne, de ha szeretnéd az egészet egyben, szólj és küldöm) */}
 
       {/* TESTIMONIALS */}
       <section className="py-24 bg-white dark:bg-zinc-950 relative z-10">
@@ -295,12 +346,7 @@ export default function Home() {
                   <p className="text-sm text-zinc-500 mt-1">{plan.period}</p>
                 </div>
                 <ul className="space-y-4 mb-12 flex-1 text-sm">
-                  {plan.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="text-emerald-600">✓</span>
-                      <span>{f}</span>
-                    </li>
-                  ))}
+                  {plan.features.map((f, i) => <li key={i} className="flex items-start gap-3"><span className="text-emerald-600">✓</span> {f}</li>)}
                 </ul>
                 <button
                   onClick={() => alert(`${plan.name} csomag kiválasztva (demo)`)}
