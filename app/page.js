@@ -7,14 +7,14 @@ export const dynamic = 'force-dynamic'
 
 export default function Home() {
   const [demoStep, setDemoStep] = useState(1)
-  const [selectedMonth, setSelectedMonth] = useState(4)
+  const [selectedMonth, setSelectedMonth] = useState(4) // Május
   const [isDark, setIsDark] = useState(false)
   const [isAnnual, setIsAnnual] = useState(true)
 
   const months = ["Jan", "Feb", "Már", "Ápr", "Máj", "Jún", "Júl", "Aug", "Szept", "Okt", "Nov", "Dec"]
   const times = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00']
 
-  // Motiváló szövegek animációhoz
+  // Motiváló szövegek a jobb oldalon
   const motivationalTexts = [
     "Több idő a valódi munkára",
     "Kevesebb lemondás, több bevétel",
@@ -37,7 +37,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setDemoStep(prev => (prev % 3) + 1)
-    }, 2800)
+    }, 3000)
     return () => clearInterval(interval)
   }, [])
 
@@ -45,7 +45,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setTextIndex(prev => (prev + 1) % motivationalTexts.length)
-    }, 3200)
+    }, 3400)
     return () => clearInterval(interval)
   }, [])
 
@@ -181,20 +181,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* DEMO + ANIMÁLT SZÖVEG */}
+      {/* DEMO SÁV - BALRA + JOBBRA ANIMÁLT SZÖVEG */}
       <section className="py-20 bg-zinc-50 dark:bg-zinc-900 relative z-10">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           
-          {/* Bal oldali DEMO (kisebb) */}
+          {/* Bal oldal: Kisebb Demo */}
           <div>
-            <h2 className="text-3xl font-semibold mb-6">Így néz ki a te foglalási oldalad</h2>
+            <h3 className="text-3xl font-semibold mb-6">Így néz ki a te foglalási oldalad</h3>
             <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-xl overflow-hidden max-w-md">
               <div className="p-8">
+                {/* Hónap választó */}
                 <div className="flex justify-center flex-wrap gap-2 mb-8">
                   {months.map((month, idx) => (
                     <div
                       key={idx}
-                      className={`px-4 py-1 text-xs rounded-full transition-all ${
+                      className={`px-5 py-1.5 text-xs rounded-full transition-all ${
                         selectedMonth === idx ? 'bg-emerald-600 text-white' : 'bg-zinc-100 dark:bg-zinc-700'
                       }`}
                     >
@@ -207,7 +208,7 @@ export default function Home() {
                   {[1, 2, 3].map((s) => (
                     <div
                       key={s}
-                      className={`h-2.5 flex-1 max-w-[70px] rounded-full transition-all ${
+                      className={`h-2.5 flex-1 max-w-[80px] rounded-full transition-all ${
                         demoStep >= s ? 'bg-emerald-600' : 'bg-zinc-200 dark:bg-zinc-700'
                       }`}
                     />
@@ -217,23 +218,40 @@ export default function Home() {
                 <AnimatePresence mode="wait">
                   {demoStep === 1 && (
                     <motion.div key="1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                      <p className="text-center mb-6 text-zinc-500">Válassz egy dátumot</p>
+                      <p className="text-center mb-6 text-zinc-500 font-medium">Válassz egy dátumot</p>
                       <div className="grid grid-cols-7 gap-2">
-                        {[...Array(14)].map((_, i) => (
-                          <div key={i} className="aspect-square rounded-2xl bg-zinc-100 dark:bg-zinc-700 flex items-center justify-center text-sm">
-                            {i + 1}
-                          </div>
-                        ))}
+                        {[...Array(14)].map((_, i) => {
+                          const isBooked = i === 3 || i === 8 // néhány foglalt nap
+                          return (
+                            <div
+                              key={i}
+                              className={`aspect-square rounded-2xl flex items-center justify-center text-sm font-medium transition-all ${
+                                isBooked
+                                  ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-400 line-through'
+                                  : 'bg-white dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 border border-transparent'
+                              }`}
+                            >
+                              {i + 1}
+                            </div>
+                          )
+                        })}
                       </div>
                     </motion.div>
                   )}
 
                   {demoStep === 2 && (
                     <motion.div key="2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                      <p className="text-center mb-6 text-zinc-500">Válassz időpontot</p>
+                      <p className="text-center mb-6 text-zinc-500 font-medium">Válassz időpontot</p>
                       <div className="grid grid-cols-2 gap-3">
-                        {times.map(t => (
-                          <div key={t} className="py-3 rounded-2xl bg-zinc-100 dark:bg-zinc-700 text-sm font-medium text-center">
+                        {times.map((t, i) => (
+                          <div
+                            key={t}
+                            className={`py-4 rounded-2xl text-sm font-medium text-center transition-all ${
+                              i === 1 || i === 4
+                                ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-400 line-through'
+                                : 'bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600'
+                            }`}
+                          >
                             {t}
                           </div>
                         ))}
@@ -243,7 +261,7 @@ export default function Home() {
 
                   {demoStep === 3 && (
                     <motion.div key="3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                      <p className="text-center mb-6 text-zinc-500">Add meg az email címed</p>
+                      <p className="text-center mb-6 text-zinc-500 font-medium">Add meg az email címed</p>
                       <div className="h-12 bg-zinc-100 dark:bg-zinc-700 rounded-2xl mb-6 flex items-center justify-center text-sm text-zinc-400">
                         pelda@email.com
                       </div>
@@ -257,16 +275,16 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Jobb oldali animált szöveg */}
+          {/* Jobb oldal: Animált motiváló szöveg */}
           <div className="flex flex-col justify-center">
-            <div className="text-4xl md:text-5xl font-semibold leading-tight min-h-[180px] flex items-center">
+            <div className="text-4xl md:text-5xl font-semibold leading-tight min-h-[160px] flex items-center">
               <AnimatePresence mode="wait">
                 <motion.p
                   key={textIndex}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.6 }}
+                  exit={{ opacity: 0, y: -30 }}
+                  transition={{ duration: 0.7 }}
                   className="text-emerald-600 dark:text-emerald-500"
                 >
                   {motivationalTexts[textIndex]}
@@ -287,9 +305,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* TESTIMONIALS, PRICING, FINAL CTA ugyanaz marad... */}
-      {/* (a teljes kód túl hosszú lenne, de ha szeretnéd az egészet egyben, szólj és küldöm) */}
 
       {/* TESTIMONIALS */}
       <section className="py-24 bg-white dark:bg-zinc-950 relative z-10">
@@ -337,7 +352,11 @@ export default function Home() {
                   plan.popular ? 'border-emerald-600 shadow-2xl scale-[1.02]' : 'border-zinc-200 dark:border-zinc-700'
                 }`}
               >
-                {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-bold px-6 py-2 rounded-full">LEGNÉPSZERŰBB</div>}
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-bold px-6 py-2 rounded-full">
+                    LEGNÉPSZERŰBB
+                  </div>
+                )}
                 <h3 className="text-2xl font-semibold mb-1">{plan.name}</h3>
                 <p className="text-zinc-500 dark:text-zinc-400 mb-8">{plan.description}</p>
                 <div className="mb-10">
@@ -346,12 +365,19 @@ export default function Home() {
                   <p className="text-sm text-zinc-500 mt-1">{plan.period}</p>
                 </div>
                 <ul className="space-y-4 mb-12 flex-1 text-sm">
-                  {plan.features.map((f, i) => <li key={i} className="flex items-start gap-3"><span className="text-emerald-600">✓</span> {f}</li>)}
+                  {plan.features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="text-emerald-600">✓</span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
                 </ul>
                 <button
                   onClick={() => alert(`${plan.name} csomag kiválasztva (demo)`)}
                   className={`w-full py-4 rounded-2xl font-medium transition-all ${
-                    plan.popular ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'border border-zinc-300 dark:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                    plan.popular
+                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                      : 'border border-zinc-300 dark:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800'
                   }`}
                 >
                   {plan.cta}
