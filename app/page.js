@@ -166,112 +166,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NAGY DEMO SÁV (az oldal közepén, szélesebb) */}
-      <section className="py-20 bg-zinc-50 dark:bg-zinc-900 relative z-10">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-4xl font-semibold text-center mb-4">Így néz ki a te foglalási oldalad</h2>
-          <p className="text-center text-zinc-500 mb-12">Pontosan így fog kinézni az ügyfeleid számára</p>
+      {/* GIF DEMO */}
+<section className="py-24 bg-zinc-50 dark:bg-zinc-900 relative z-10">
+  <div className="max-w-4xl mx-auto px-6 text-center">
 
-          <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-2xl overflow-hidden mx-auto" style={{ maxWidth: '920px' }}>
-            <div className="p-12 md:p-16">
-              {/* Hónap választó */}
-              <div className="flex justify-center flex-wrap gap-2 mb-10">
-                {months.map((month, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedMonth(idx)}
-                    className={`px-6 py-2 text-sm rounded-full transition-all ${
-                      selectedMonth === idx
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-zinc-100 dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600'
-                    }`}
-                  >
-                    {month}
-                  </button>
-                ))}
-              </div>
+    <h2 className="text-4xl font-semibold mb-4">
+      Így működik a foglalás
+    </h2>
 
-              <div className="flex justify-center gap-3 mb-10">
-                {[1, 2, 3].map((s) => (
-                  <div
-                    key={s}
-                    className={`h-2.5 flex-1 max-w-[110px] rounded-full transition-all ${
-                      step >= s ? 'bg-emerald-600' : 'bg-zinc-200 dark:bg-zinc-700'
-                    }`}
-                  />
-                ))}
-              </div>
+    <p className="text-zinc-500 mb-12">
+      Az ügyfeleidnek csak ennyit kell látniuk
+    </p>
 
-              <AnimatePresence mode="wait">
-                {step === 1 && (
-                  <motion.div key="1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <p className="text-center mb-8 text-zinc-500 font-medium">Válassz egy dátumot</p>
-                    <div className="grid grid-cols-7 gap-3">
-                      {[...Array(14)].map((_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setSelectedDate(i)}
-                          className={`aspect-square rounded-2xl text-sm font-medium transition-all ${
-                            selectedDate === i
-                              ? 'bg-emerald-600 text-white'
-                              : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 bg-white dark:bg-zinc-800'
-                          }`}
-                        >
-                          {i + 1}
-                        </button>
-                      ))}
-                    </div>
-                    <button onClick={() => setStep(2)} className="mt-12 w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl transition">
-                      Tovább →
-                    </button>
-                  </motion.div>
-                )}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
+      className="relative rounded-3xl overflow-hidden border border-zinc-200 dark:border-zinc-700 shadow-2xl bg-white dark:bg-zinc-800"
+    >
 
-                {step === 2 && (
-                  <motion.div key="2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <p className="text-center mb-8 text-zinc-500 font-medium">Válassz időpontot</p>
-                    <div className="grid grid-cols-2 gap-4">
-                      {times.map((t) => (
-                        <button
-                          key={t}
-                          onClick={() => setSelectedTime(t)}
-                          className={`py-4 rounded-2xl font-medium transition-all ${
-                            selectedTime === t
-                              ? 'bg-emerald-600 text-white'
-                              : 'border border-zinc-200 dark:border-zinc-700 hover:border-emerald-600'
-                          }`}
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
-                    <button onClick={() => setStep(3)} className="mt-12 w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl transition">
-                      Tovább az adatokhoz →
-                    </button>
-                  </motion.div>
-                )}
+      {/* 👉 IDE TESZED MAJD A GIF-ET */}
+      <img
+        src="/booking-demo.gif"
+        alt="Foglalási folyamat"
+        className="w-full h-auto"
+      />
 
-                {step === 3 && (
-                  <motion.div key="3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <input
-                      type="email"
-                      placeholder="Add meg az email címed"
-                      className="w-full px-6 py-5 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 rounded-2xl focus:outline-none focus:border-emerald-600 mb-8"
-                    />
-                    <button
-                      onClick={handleBooking}
-                      disabled={loading}
-                      className="w-full py-5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-zinc-400 text-white font-medium rounded-2xl transition text-lg"
-                    >
-                      {loading ? 'Foglalás folyamatban...' : 'Foglalom ezt az időpontot'}
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* overlay glow */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 to-transparent"/>
+    </motion.div>
+
+  </div>
+</section>
 
       {/* TESTIMONIALS */}
       <section className="py-24 bg-white dark:bg-zinc-950 relative z-10">
