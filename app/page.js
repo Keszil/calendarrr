@@ -1,14 +1,23 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export const dynamic = 'force-dynamic'
 
 export default function Home() {
+  const [step, setStep] = useState(1)
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [selectedTime, setSelectedTime] = useState(null)
+  const [selectedMonth, setSelectedMonth] = useState(4) // Május alapértelmezett (0-index)
+  const [loading, setLoading] = useState(false)
   const [isDark, setIsDark] = useState(false)
   const [isAnnual, setIsAnnual] = useState(true)
 
+  const months = ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"]
+  const times = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00']
+
+  // Dark mode
   useEffect(() => {
     if (typeof document !== 'undefined') {
       isDark
@@ -17,136 +26,269 @@ export default function Home() {
     }
   }, [isDark])
 
+  const handleBooking = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      alert('Foglalás sikeres! 🎉\n\nEz csak egy demo.')
+    }, 1500)
+  }
+
   const pricingPlans = useMemo(() => [
     {
       name: "Ingyenes",
       price: 0,
-      description: "Első lépésekhez",
-      features: ["1 foglalási oldal", "Alap funkciók"],
-      cta: "Kezdés",
+      period: "",
+      description: "Kipróbálásra tökéletes",
+      features: ["1 foglalási link", "Korlátozott időpontok", "Alap email visszaigazolás"],
+      cta: "Ingyen kezdés",
+      popular: false,
+    },
+    {
+      name: "Starter",
+      price: isAnnual ? 4900 : 5900,
+      period: isAnnual ? "/hó (éves)" : "/hó",
+      description: "Egyéni szakembereknek",
+      features: ["Korlátlan foglalási linkek", "Valós idejű naptár", "Automatikus emlékeztetők", "Zoom integráció", "Alap analitika"],
+      cta: "Starter csomag",
+      popular: false,
     },
     {
       name: "Pro",
       price: isAnnual ? 9900 : 12900,
-      description: "A legtöbb felhasználónak",
-      features: ["Korlátlan foglalás", "Automatikus emailek", "Integrációk"],
-      cta: "Kipróbálom",
-      popular: true
+      period: isAnnual ? "/hó (éves)" : "/hó",
+      description: "A legnépszerűbb választás",
+      features: ["Minden a Starterben", "Egyéni branding", "Csoportfoglalás", "Haladó analitika", "Prioritásos támogatás", "Nincs Időpont.app logó"],
+      cta: "Pro csomag indítása",
+      popular: true,
+    },
+    {
+      name: "Business",
+      price: isAnnual ? 19900 : 24900,
+      period: isAnnual ? "/hó (éves)" : "/hó",
+      description: "Csapatoknak és stúdióknak",
+      features: ["Minden a Proban", "Több felhasználó", "Csapat naptár", "API hozzáférés", "Fehér címke", "Dedikált támogatás"],
+      cta: "Business csomag",
+      popular: false,
     }
   ], [isAnnual])
 
+  const testimonials = [
+    { name: "Kovács Anna", role: "Fodrász & Szalon tulajdonos", text: "Heti 6-8 órát spórolok az egyeztetéseken. Az ügyfelek imádják, hogy maguk tudnak időpontot foglalni.", rating: 5, avatar: "👩‍🦰" },
+    { name: "Nagy Márk", role: "Életvezetési coach", text: "Sokkal professzionálisabb lett a szolgáltatásom. Kevesebb lemondás, több betelt időpont.", rating: 5, avatar: "🧔" },
+    { name: "Szabó Eszter", role: "Jogi tanácsadó", text: "A korábbi végtelen email-váltás helyett most tényleg csak a munkára kell koncentrálnom.", rating: 5, avatar: "👩‍💼" },
+    { name: "Tóth Péter", role: "Személyi edző", text: "Az ügyfeleim 90%-a magától foglal. Hihetetlenül leegyszerűsítette az életemet.", rating: 5, avatar: "💪" }
+  ]
+
   return (
     <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 relative overflow-hidden">
-
-      {/* FINOM ABSZTRAKT HÁTTÉR */}
+      
+      {/* Finom mozgó absztrakt háttér animáció */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <motion.div
-          animate={{ x: [0, 100, 0], y: [0, 50, 0] }}
-          transition={{ duration: 40, repeat: Infinity }}
-          className="absolute w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl"
+          animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 bg-[radial-gradient(at_25%_30%,rgba(16,185,129,0.09),transparent_55%)]"
         />
         <motion.div
-          animate={{ x: [0, -120, 0], y: [0, -60, 0] }}
-          transition={{ duration: 50, repeat: Infinity }}
-          className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl"
+          animate={{ backgroundPosition: ['100% 40%', '0% 70%', '100% 40%'] }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear", delay: 12 }}
+          className="absolute inset-0 bg-[radial-gradient(at_75%_65%,rgba(16,185,129,0.07),transparent_60%)]"
         />
       </div>
 
       {/* NAVBAR */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-zinc-950/80 border-b border-zinc-200 dark:border-zinc-800">
+      <header className="sticky top-0 z-50 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
-          <div className="font-semibold text-xl">Időpont.app</div>
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">I</div>
+            <span className="text-2xl font-semibold tracking-tight">Időpont.app</span>
+          </div>
 
-          <div className="flex gap-6 items-center">
-            <button onClick={() => setIsDark(!isDark)}>
+          <div className="flex items-center gap-8">
+            <button onClick={() => setIsDark(!isDark)} className="text-2xl hover:text-emerald-600 transition-colors">
               {isDark ? '☀️' : '🌙'}
             </button>
-            <button className="hover:text-blue-500">Bejelentkezés</button>
-            <button className="px-5 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition">
-              Regisztráció
+            <button className="font-medium hover:text-emerald-600 transition-colors">Bejelentkezés</button>
+            <button
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-full transition-colors"
+            >
+              Ingyen kezdés
             </button>
           </div>
         </div>
       </header>
 
       {/* HERO */}
-      <section className="pt-32 pb-24 text-center relative z-10">
-        <h1 className="text-6xl font-bold mb-6 tracking-tight">
-          Időpontfoglalás<br />egyszerűen
-        </h1>
+      <section className="pt-28 pb-24 relative z-10">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <h1 className="text-6xl md:text-7xl font-bold tracking-tighter leading-none mb-8">
+            Időpontok egyeztetése<br />egyszerűen.
+          </h1>
+          <p className="text-2xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto mb-12">
+            Küldj egy linket az ügyfeleidnek, és ők maguktól lefoglalják a legmegfelelőbb időpontot.
+          </p>
 
-        <p className="text-xl text-zinc-500 max-w-xl mx-auto mb-10">
-          Egy letisztult rendszer, ahol az ügyfeleid maguktól foglalnak.
-        </p>
-
-        <div className="flex gap-4 justify-center">
-          <button className="px-8 py-4 bg-blue-600 text-white rounded-full hover:scale-105 transition">
-            Kipróbálom
-          </button>
-          <button className="px-8 py-4 border rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800">
-            Demo
-          </button>
-        </div>
-      </section>
-
-      {/* 👇 DEMO (KISEBB + GIF) */}
-      <section className="pb-24 relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-zinc-500 mb-6">Így működik a gyakorlatban</p>
-
-          <div className="rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-lg">
-            {/* IDE TEDD A GIF-ET */}
-            <img
-              src="/demo.gif"
-              alt="demo"
-              className="w-full opacity-90"
-            />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-10 py-4 text-lg font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition"
+            >
+              Ingyen fiók létrehozása
+            </button>
+            <button className="px-8 py-4 text-lg font-medium border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-50 dark:hover:bg-zinc-900 transition">
+              Hogyan működik?
+            </button>
           </div>
         </div>
       </section>
 
-      {/* FEATURE PREVIEW (UI MOCK) */}
-      <section className="py-24 relative z-10">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-
-          <div>
-            <h2 className="text-3xl font-semibold mb-4">
-              Így néz ki a saját oldalad
-            </h2>
-            <p className="text-zinc-500">
-              Letisztult, gyors és mobilbarát felület — ügyfeleid imádni fogják.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-zinc-900 border rounded-3xl p-6 shadow-xl">
-            <div className="space-y-3">
-              <div className="h-10 bg-zinc-100 dark:bg-zinc-800 rounded-xl" />
-              <div className="grid grid-cols-3 gap-2">
-                <div className="h-12 bg-blue-500 rounded-xl" />
-                <div className="h-12 bg-zinc-200 dark:bg-zinc-700 rounded-xl" />
-                <div className="h-12 bg-zinc-200 dark:bg-zinc-700 rounded-xl" />
+      {/* HOW IT WORKS */}
+      <section className="py-20 bg-white dark:bg-zinc-950 relative z-10">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-4xl font-semibold text-center mb-16">Mindössze 3 lépés</h2>
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              { num: "01", title: "Állítsd be a szabad időidet", desc: "Egyszer kell csak megcsinálni" },
+              { num: "02", title: "Oszd meg a saját linked", desc: "WhatsApp, email, Instagram vagy weboldal" },
+              { num: "03", title: "Az ügyfelek maguktól foglalnak", desc: "Te csak a munkára koncentrálsz" }
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div className="mx-auto w-20 h-20 rounded-3xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-4xl font-semibold text-emerald-600 mb-8">
+                  {item.num}
+                </div>
+                <h3 className="text-2xl font-semibold mb-4">{item.title}</h3>
+                <p className="text-zinc-600 dark:text-zinc-400">{item.desc}</p>
               </div>
-              <div className="h-12 bg-blue-500 rounded-xl" />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* NAGY DEMO SÁV (az oldal közepén, szélesebb) */}
+      <section className="py-20 bg-zinc-50 dark:bg-zinc-900 relative z-10">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-4xl font-semibold text-center mb-4">Így néz ki a te foglalási oldalad</h2>
+          <p className="text-center text-zinc-500 mb-12">Pontosan így fog kinézni az ügyfeleid számára</p>
+
+          <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-2xl overflow-hidden mx-auto" style={{ maxWidth: '920px' }}>
+            <div className="p-12 md:p-16">
+              {/* Hónap választó */}
+              <div className="flex justify-center flex-wrap gap-2 mb-10">
+                {months.map((month, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedMonth(idx)}
+                    className={`px-6 py-2 text-sm rounded-full transition-all ${
+                      selectedMonth === idx
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-zinc-100 dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600'
+                    }`}
+                  >
+                    {month}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex justify-center gap-3 mb-10">
+                {[1, 2, 3].map((s) => (
+                  <div
+                    key={s}
+                    className={`h-2.5 flex-1 max-w-[110px] rounded-full transition-all ${
+                      step >= s ? 'bg-emerald-600' : 'bg-zinc-200 dark:bg-zinc-700'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <AnimatePresence mode="wait">
+                {step === 1 && (
+                  <motion.div key="1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <p className="text-center mb-8 text-zinc-500 font-medium">Válassz egy dátumot</p>
+                    <div className="grid grid-cols-7 gap-3">
+                      {[...Array(14)].map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setSelectedDate(i)}
+                          className={`aspect-square rounded-2xl text-sm font-medium transition-all ${
+                            selectedDate === i
+                              ? 'bg-emerald-600 text-white'
+                              : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 bg-white dark:bg-zinc-800'
+                          }`}
+                        >
+                          {i + 1}
+                        </button>
+                      ))}
+                    </div>
+                    <button onClick={() => setStep(2)} className="mt-12 w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl transition">
+                      Tovább →
+                    </button>
+                  </motion.div>
+                )}
+
+                {step === 2 && (
+                  <motion.div key="2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <p className="text-center mb-8 text-zinc-500 font-medium">Válassz időpontot</p>
+                    <div className="grid grid-cols-2 gap-4">
+                      {times.map((t) => (
+                        <button
+                          key={t}
+                          onClick={() => setSelectedTime(t)}
+                          className={`py-4 rounded-2xl font-medium transition-all ${
+                            selectedTime === t
+                              ? 'bg-emerald-600 text-white'
+                              : 'border border-zinc-200 dark:border-zinc-700 hover:border-emerald-600'
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                    <button onClick={() => setStep(3)} className="mt-12 w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl transition">
+                      Tovább az adatokhoz →
+                    </button>
+                  </motion.div>
+                )}
+
+                {step === 3 && (
+                  <motion.div key="3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <input
+                      type="email"
+                      placeholder="Add meg az email címed"
+                      className="w-full px-6 py-5 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 rounded-2xl focus:outline-none focus:border-emerald-600 mb-8"
+                    />
+                    <button
+                      onClick={handleBooking}
+                      disabled={loading}
+                      className="w-full py-5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-zinc-400 text-white font-medium rounded-2xl transition text-lg"
+                    >
+                      {loading ? 'Foglalás folyamatban...' : 'Foglalom ezt az időpontot'}
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
-
         </div>
       </section>
 
-      {/* TESTIMONIALS (LIGHTER STYLE) */}
-      <section className="py-24 bg-zinc-50 dark:bg-zinc-900 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-zinc-500 mb-12">Felhasználóink mondták</p>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              "Rengeteg időt spóroltam vele.",
-              "Az ügyfelek maguktól foglalnak.",
-              "Letisztult és gyors.",
-              "Pont erre volt szükségem."
-            ].map((text, i) => (
-              <div key={i} className="p-6 bg-white dark:bg-zinc-800 rounded-2xl">
-                {text}
+      {/* TESTIMONIALS */}
+      <section className="py-24 bg-white dark:bg-zinc-950 relative z-10">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-4xl font-semibold text-center mb-16">Mit mondanak a felhasználóink?</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {testimonials.map((t, i) => (
+              <div key={i} className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-10 rounded-3xl">
+                <div className="flex gap-4 mb-6">
+                  <div className="text-4xl">{t.avatar}</div>
+                  <div>
+                    <p className="font-semibold">{t.name}</p>
+                    <p className="text-sm text-zinc-500">{t.role}</p>
+                  </div>
+                </div>
+                <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">„{t.text}”</p>
+                <div className="mt-6 text-emerald-500">{'★'.repeat(t.rating)}</div>
               </div>
             ))}
           </div>
@@ -154,43 +296,91 @@ export default function Home() {
       </section>
 
       {/* PRICING */}
-      <section className="py-24 relative z-10">
-        <div className="max-w-5xl mx-auto text-center mb-12">
-          <h2 className="text-3xl font-semibold mb-4">
-            Egyszerű árak
-          </h2>
-        </div>
+      <section id="pricing" className="py-24 bg-zinc-50 dark:bg-zinc-900 relative z-10">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-semibold mb-4">Válaszd ki a számodra tökéletes csomagot</h2>
+            <p className="text-xl text-zinc-600 dark:text-zinc-400">14 nap ingyen. Bármikor lemondható.</p>
+          </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {pricingPlans.map((plan, i) => (
-            <div key={i} className={`p-8 rounded-3xl border ${
-              plan.popular ? 'border-blue-500 shadow-xl' : ''
-            }`}>
-              <h3 className="text-xl mb-2">{plan.name}</h3>
-              <div className="text-4xl font-bold mb-4">
-                {plan.price} Ft
-              </div>
-              <ul className="mb-6 text-zinc-500 space-y-2">
-                {plan.features.map((f, j) => <li key={j}>✓ {f}</li>)}
-              </ul>
-              <button className="w-full py-3 rounded-xl bg-blue-600 text-white">
-                {plan.cta}
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1">
+              <button
+                onClick={() => setIsAnnual(false)}
+                className={`px-8 py-3 rounded-full text-sm font-medium transition ${!isAnnual ? 'bg-emerald-600 text-white' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
+              >
+                Havi
+              </button>
+              <button
+                onClick={() => setIsAnnual(true)}
+                className={`px-8 py-3 rounded-full text-sm font-medium flex items-center gap-2 transition ${isAnnual ? 'bg-emerald-600 text-white' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
+              >
+                Éves <span className="text-emerald-400 text-xs">-20%</span>
               </button>
             </div>
-          ))}
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {pricingPlans.map((plan, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ y: plan.popular ? -8 : -4 }}
+                className={`relative rounded-3xl p-8 flex flex-col border bg-white dark:bg-zinc-800 transition-all ${
+                  plan.popular ? 'border-emerald-600 shadow-2xl scale-[1.03]' : 'border-zinc-200 dark:border-zinc-700'
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-bold px-6 py-2 rounded-full">
+                    LEGNÉPSZERŰBB
+                  </div>
+                )}
+                <h3 className="text-2xl font-semibold mb-1">{plan.name}</h3>
+                <p className="text-zinc-500 dark:text-zinc-400 mb-8">{plan.description}</p>
+
+                <div className="mb-10">
+                  <span className="text-5xl font-bold tracking-tighter">{plan.price.toLocaleString('hu-HU')}</span>
+                  <span className="text-zinc-500"> Ft</span>
+                  <p className="text-sm text-zinc-500 mt-1">{plan.period}</p>
+                </div>
+
+                <ul className="space-y-4 mb-12 flex-1 text-sm">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="text-emerald-600 mt-1">✓</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  onClick={() => alert(`${plan.name} csomag kiválasztva (demo)`)}
+                  className={`w-full py-4 rounded-2xl font-medium transition-all ${
+                    plan.popular
+                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                      : 'border border-zinc-300 dark:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                  }`}
+                >
+                  {plan.cta}
+                </button>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 text-center relative z-10">
-        <h2 className="text-4xl mb-6">
-          Kezdd el most
-        </h2>
-        <button className="px-10 py-5 bg-blue-600 text-white rounded-full hover:scale-105 transition">
-          Regisztráció
-        </button>
+      {/* FINAL CTA */}
+      <section className="py-24 bg-emerald-600 text-white relative z-10">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-5xl font-semibold mb-6">Kezdj el időpontokat fogadni még ma</h2>
+          <p className="text-xl mb-10 opacity-90">Csatlakozz több mint 1800 elégedett szakemberhez</p>
+          <button
+            onClick={() => alert('Regisztráció indítása...')}
+            className="px-14 py-6 text-xl font-semibold bg-white text-emerald-700 rounded-full hover:bg-emerald-50 transition shadow-lg"
+          >
+            Ingyen fiók létrehozása most →
+          </button>
+        </div>
       </section>
-
     </main>
   )
 }
