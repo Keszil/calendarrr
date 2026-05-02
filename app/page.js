@@ -15,10 +15,9 @@ export default function Home() {
 
   const times = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00']
 
-  // Dark mode
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      isDark 
+      isDark
         ? document.documentElement.classList.add('dark')
         : document.documentElement.classList.remove('dark')
     }
@@ -158,13 +157,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TRUST BAR */}
-      <div className="border-y border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 py-5">
-        <div className="max-w-6xl mx-auto px-6 text-center text-sm text-zinc-500 dark:text-zinc-400">
-          ⭐⭐⭐⭐⭐ 4.97 • Már több mint 1800 magyar szakember használja
-        </div>
-      </div>
-
       {/* HOW IT WORKS */}
       <section className="py-24 bg-white dark:bg-zinc-950">
         <div className="max-w-6xl mx-auto px-6">
@@ -187,19 +179,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BOOKING DEMO */}
-      <section className="py-24 bg-zinc-50 dark:bg-zinc-900">
-        <div className="max-w-4xl mx-auto px-6">
+      {/* NAGY BOOKING DEMO (az oldal felét foglalja el) */}
+      <section className="py-20 bg-zinc-50 dark:bg-zinc-900">
+        <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-4xl font-semibold text-center mb-4">Így néz ki a te foglalási oldalad</h2>
           <p className="text-center text-zinc-500 mb-12">Pontosan így fog kinézni az ügyfeleid számára</p>
 
-          <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-xl overflow-hidden">
-            <div className="p-12">
+          <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-2xl overflow-hidden mx-auto" style={{ maxWidth: '960px' }}>
+            <div className="p-12 md:p-16">
               <div className="flex justify-center gap-3 mb-12">
                 {[1, 2, 3].map((s) => (
                   <div
                     key={s}
-                    className={`h-2.5 flex-1 max-w-[100px] rounded-full transition-all ${
+                    className={`h-2.5 flex-1 max-w-[120px] rounded-full transition-all ${
                       step >= s ? 'bg-emerald-600' : 'bg-zinc-200 dark:bg-zinc-700'
                     }`}
                   />
@@ -216,19 +208,14 @@ export default function Home() {
                           key={i}
                           onClick={() => setSelectedDate(i)}
                           className={`aspect-square rounded-2xl text-sm font-medium transition-all ${
-                            selectedDate === i
-                              ? 'bg-emerald-600 text-white'
-                              : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 bg-white dark:bg-zinc-800 border border-transparent'
+                            selectedDate === i ? 'bg-emerald-600 text-white' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 bg-white dark:bg-zinc-800 border border-transparent'
                           }`}
                         >
                           {i + 1}
                         </button>
                       ))}
                     </div>
-                    <button
-                      onClick={() => setStep(2)}
-                      className="mt-12 w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl transition"
-                    >
+                    <button onClick={() => setStep(2)} className="mt-12 w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl transition">
                       Tovább →
                     </button>
                   </motion.div>
@@ -243,19 +230,14 @@ export default function Home() {
                           key={t}
                           onClick={() => setSelectedTime(t)}
                           className={`py-4 rounded-2xl font-medium transition-all ${
-                            selectedTime === t
-                              ? 'bg-emerald-600 text-white'
-                              : 'border border-zinc-200 dark:border-zinc-700 hover:border-emerald-600'
+                            selectedTime === t ? 'bg-emerald-600 text-white' : 'border border-zinc-200 dark:border-zinc-700 hover:border-emerald-600'
                           }`}
                         >
                           {t}
                         </button>
                       ))}
                     </div>
-                    <button
-                      onClick={() => setStep(3)}
-                      className="mt-12 w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl transition"
-                    >
+                    <button onClick={() => setStep(3)} className="mt-12 w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl transition">
                       Tovább az adatokhoz →
                     </button>
                   </motion.div>
@@ -313,7 +295,6 @@ export default function Home() {
             <p className="text-xl text-zinc-600 dark:text-zinc-400">14 nap ingyen. Bármikor lemondható.</p>
           </div>
 
-          {/* Billing toggle */}
           <div className="flex justify-center mb-12">
             <div className="inline-flex bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1">
               <button
@@ -335,11 +316,9 @@ export default function Home() {
             {pricingPlans.map((plan, index) => (
               <motion.div
                 key={index}
-                whileHover={{ y: -8 }}
+                whileHover={{ y: plan.popular ? -8 : -4 }}
                 className={`relative rounded-3xl p-8 flex flex-col border bg-white dark:bg-zinc-800 transition-all ${
-                  plan.popular 
-                    ? 'border-emerald-600 shadow-2xl scale-105' 
-                    : 'border-zinc-200 dark:border-zinc-700'
+                  plan.popular ? 'border-emerald-600 shadow-2xl scale-[1.03]' : 'border-zinc-200 dark:border-zinc-700'
                 }`}
               >
                 {plan.popular && (
@@ -347,7 +326,6 @@ export default function Home() {
                     LEGNÉPSZERŰBB
                   </div>
                 )}
-
                 <h3 className="text-2xl font-semibold mb-1">{plan.name}</h3>
                 <p className="text-zinc-500 dark:text-zinc-400 mb-8">{plan.description}</p>
 
@@ -369,8 +347,8 @@ export default function Home() {
                 <button
                   onClick={() => alert(`${plan.name} csomag kiválasztva (demo)`)}
                   className={`w-full py-4 rounded-2xl font-medium transition-all ${
-                    plan.popular 
-                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                    plan.popular
+                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
                       : 'border border-zinc-300 dark:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800'
                   }`}
                 >
